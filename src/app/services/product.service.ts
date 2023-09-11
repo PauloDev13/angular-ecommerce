@@ -16,7 +16,7 @@ interface IGetResponse {
 export class ProductService {
   // constructor() {}
   private readonly httpClient: HttpClient = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api/products';
+  private readonly baseUrl = 'http://localhost:8080/api/products?size=100';
 
   getProductList(): Observable<Product[]> {
     return this.httpClient
