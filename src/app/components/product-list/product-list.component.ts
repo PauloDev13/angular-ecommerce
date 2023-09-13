@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Product } from '../../common/product';
@@ -10,20 +10,31 @@ import { ProductService } from '../../services/product.service';
   // templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
   products: Product[] = [];
   currentCategoryId!: number;
+  searchModel = false;
   private productService: ProductService = inject(ProductService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   ngOnInit() {
     this.route.params.subscribe({
-      next: () => this.listProduct(),
+      next: () => this.listProducts(),
     });
   }
 
-  listProduct() {
-    const hasCategoryId = !!this.route.snapshot.params['id'];
+  listProducts() {
+    this.searchModel = this.route.snapshot.paramMap.has('keyword');
+    if (this.searchModel) {
+      this.handleSearchProducts();
+    } else {
+      this.handleListProduct();
+    }
+  }
+
+  handleListProduct() {
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
+
     if (hasCategoryId) {
       this.currentCategoryId = +this.route.snapshot.params['id'];
     } else {
@@ -38,7 +49,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this.listProduct().unsubscribe();
+  handleSearchProducts() {
+    const theKeyword: string = this.route.snapshot.params['keyword'];
+    this.productService.searchProducts(theKeyword).subscribe({
+      next: (data: Product[]) => {
+        this.products = data;
+      },
+    });
   }
 }
