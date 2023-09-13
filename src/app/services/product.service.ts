@@ -16,11 +16,19 @@ interface IGetResponse {
 export class ProductService {
   // constructor() {}
   private readonly httpClient: HttpClient = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api/products?size=100';
+  private readonly baseUrl = 'http://localhost:8080/api/products';
 
-  getProductList(): Observable<Product[]> {
+  getProductList(categoryId: number): Observable<Product[]> {
     return this.httpClient
-      .get<IGetResponse>(this.baseUrl)
+      .get<IGetResponse>(
+        `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`,
+      )
       .pipe(map(response => response._embedded.products));
   }
+
+  // getProductList(): Observable<Product[]> {
+  //   return this.httpClient
+  //     .get<IGetResponse>(this.baseUrl)
+  //     .pipe(map(response => response._embedded.products));
+  // }
 }

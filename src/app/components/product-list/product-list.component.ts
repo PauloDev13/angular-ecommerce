@@ -1,4 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { Product } from '../../common/product';
 import { ProductService } from '../../services/product.service';
@@ -11,18 +12,30 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   products: Product[] = [];
+  currentCategoryId!: number;
   private productService: ProductService = inject(ProductService);
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.listProduct();
+    this.route.params.subscribe({
+      next: () => this.listProduct(),
+    });
   }
 
   listProduct() {
-    return this.productService.getProductList().subscribe({
-      next: (data: Product[]) => {
-        this.products = data;
-      },
-    });
+    const hasCategoryId = !!this.route.snapshot.params['id'];
+    if (hasCategoryId) {
+      this.currentCategoryId = +this.route.snapshot.params['id'];
+    } else {
+      this.currentCategoryId = 1;
+    }
+    return this.productService
+      .getProductList(this.currentCategoryId)
+      .subscribe({
+        next: (data: Product[]) => {
+          this.products = data;
+        },
+      });
   }
 
   ngOnDestroy() {
