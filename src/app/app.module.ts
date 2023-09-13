@@ -5,10 +5,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent],
+  declarations: [
+    AppComponent,
+    ProductListComponent,
+    ProductCategoryMenuComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
