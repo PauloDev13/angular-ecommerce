@@ -21,7 +21,6 @@ interface IGetResponseProductCategory {
   providedIn: 'root',
 })
 export class ProductService {
-  // constructor() {}
   private readonly httpClient: HttpClient = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:8080/api';
 
@@ -39,6 +38,13 @@ export class ProductService {
     return this.httpClient
       .get<IGetResponseProductCategory>(`${this.baseUrl}/product-category`)
       .pipe(map(response => response._embedded.productCategory));
+  }
+
+  getProductDetails(productId: number): Observable<Product> {
+    console.log('ID NO SERVICE ', productId);
+    return this.httpClient.get<Product>(
+      `${this.baseUrl}/products/${productId}`,
+    );
   }
 
   private getProducts(getUrl: string) {
