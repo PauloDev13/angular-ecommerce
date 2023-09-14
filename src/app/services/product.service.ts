@@ -59,10 +59,9 @@ export class ProductService {
     thePageSize: number,
     theCategoryId: number,
   ): Observable<IGetResponseProducts> {
-    const url =
-      `${this.baseUrl}/products/search/findByCategoryId?id=${theCategoryId}` +
-      `&page=${thePage}&size=${thePageSize}`;
-    return this.httpClient.get<IGetResponseProducts>(url);
+    console.log('PAGE NUMBER IN SERVICE', thePage);
+    const searchUrl = `${this.baseUrl}/products/search/findByCategoryId?id=${theCategoryId}&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<IGetResponseProducts>(searchUrl);
   }
 
   private getProducts(getUrl: string) {

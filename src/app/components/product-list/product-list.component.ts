@@ -12,17 +12,23 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
-  currentCategoryId!: number;
+  currentCategoryId = 1;
+  previousCategoryId = 1;
   searchModel = false;
-  thePageNumber = 1;
-  thePageSize = 10;
+
+  // properties for pagination
+  thePageNumber = 2;
+  thePageSize = 5;
   theTotalElements = 0;
+
   private productService: ProductService = inject(ProductService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   ngOnInit() {
     this.route.params.subscribe({
-      next: () => this.listProducts(),
+      next: () => {
+        this.listProducts();
+      },
     });
   }
 
@@ -43,6 +49,14 @@ export class ProductListComponent implements OnInit {
     } else {
       this.currentCategoryId = 1;
     }
+
+    if (this.previousCategoryId !== this.currentCategoryId) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+    console.log('Page', this.thePageNumber);
+
     return this.productService
       .getProductListPaginate(
         this.thePageNumber - 1,
@@ -51,10 +65,11 @@ export class ProductListComponent implements OnInit {
       )
       .subscribe({
         next: data => {
-          this.products = data._embedded.products;
-          this.thePageNumber = data.page.number + 1;
-          this.thePageSize = data.page.size;
-          this.theTotalElements = data.page.totalElements;
+          console.log('PAGINATION', data.page);
+          // this.products = data._embedded.products;
+          // this.thePageNumber = data.page.number + 1;
+          // this.thePageSize = data.page.size;
+          // this.theTotalElements = data.page.totalElements;
         },
       });
   }
