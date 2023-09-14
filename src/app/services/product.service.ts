@@ -5,10 +5,18 @@ import { map, Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { ProductCategory } from '../common/product-category';
 
+interface IPagination {
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
+}
+
 interface IGetResponseProducts {
   _embedded: {
     products: Product[];
   };
+  page: IPagination;
 }
 
 interface IGetResponseProductCategory {
@@ -41,10 +49,20 @@ export class ProductService {
   }
 
   getProductDetails(productId: number): Observable<Product> {
-    console.log('ID NO SERVICE ', productId);
     return this.httpClient.get<Product>(
       `${this.baseUrl}/products/${productId}`,
     );
+  }
+
+  getProductListPaginate(
+    thePage: number,
+    thePageSize: number,
+    theCategoryId: number,
+  ): Observable<IGetResponseProducts> {
+    const url =
+      `${this.baseUrl}/products/search/findByCategoryId?id=${theCategoryId}` +
+      `&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<IGetResponseProducts>(url);
   }
 
   private getProducts(getUrl: string) {

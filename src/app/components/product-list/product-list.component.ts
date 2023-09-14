@@ -14,6 +14,9 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   currentCategoryId!: number;
   searchModel = false;
+  thePageNumber = 1;
+  thePageSize = 10;
+  theTotalElements = 0;
   private productService: ProductService = inject(ProductService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
@@ -41,10 +44,17 @@ export class ProductListComponent implements OnInit {
       this.currentCategoryId = 1;
     }
     return this.productService
-      .getProductList(this.currentCategoryId)
+      .getProductListPaginate(
+        this.thePageNumber - 1,
+        this.thePageSize,
+        this.currentCategoryId,
+      )
       .subscribe({
-        next: (data: Product[]) => {
-          this.products = data;
+        next: data => {
+          this.products = data._embedded.products;
+          this.thePageNumber = data.page.number + 1;
+          this.thePageSize = data.page.size;
+          this.theTotalElements = data.page.totalElements;
         },
       });
   }
