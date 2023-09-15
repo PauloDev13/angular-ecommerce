@@ -29,10 +29,21 @@
                 <ngb-pagination
                   (pageChange)="listProducts()"
                   [(page)]="thePageNumber"
+                  [boundaryLinks]="true"
                   [collectionSize]="theTotalElements"
+                  [maxSize]="5"
                   [pageSize]="thePageSize"
                 >
                 </ngb-pagination>
+              </div>
+              <div class="col-md-3 mt-2" style="text-align: right">
+                <span class="me-2">Qtd. por Pag.</span>
+                <select (change)="updatePageSize($event)">
+                  <option selected>5</option>
+                  <option>10</option>
+                  <option>20</option>
+                  <option>50</option>
+                </select>
               </div>
             </div>
           </div>

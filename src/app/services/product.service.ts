@@ -12,7 +12,7 @@ interface IPagination {
   number: number;
 }
 
-interface IGetResponseProducts {
+export interface IGetResponseProducts {
   _embedded: {
     products: Product[];
   };
@@ -37,9 +37,31 @@ export class ProductService {
     return this.getProducts(searchUrl);
   }
 
+  getProductListPaginate(
+    thePageNumber: number,
+    thePageSize: number,
+    theCategoryId: number,
+  ): Observable<IGetResponseProducts> {
+    const searchUrl = `${this.baseUrl}/products/search/findByCategoryId?id=${theCategoryId}
+    &page=${thePageNumber}&size=${thePageSize}`;
+
+    return this.httpClient.get<IGetResponseProducts>(searchUrl);
+  }
+
   searchProducts(theKeyword: string) {
     const searchUrl = `${this.baseUrl}/products/search/findByNameContaining?name=${theKeyword}`;
     return this.getProducts(searchUrl);
+  }
+
+  searchProductListPaginate(
+    thePageNumber: number,
+    thePageSize: number,
+    theKeyword: string,
+  ): Observable<IGetResponseProducts> {
+    console.log(thePageNumber + '-' + thePageSize + '-' + theKeyword);
+    const searchUrl = `${this.baseUrl}/products/search/findByNameContaining?name=${theKeyword}&page=${thePageNumber}&size=${thePageSize}`;
+
+    return this.httpClient.get<IGetResponseProducts>(searchUrl);
   }
 
   getProductCategories(): Observable<ProductCategory[]> {
@@ -52,18 +74,6 @@ export class ProductService {
     return this.httpClient.get<Product>(
       `${this.baseUrl}/products/${productId}`,
     );
-  }
-
-  getProductListPaginate(
-    thePage: number,
-    thePageSize: number,
-    theCategoryId: number,
-  ): Observable<IGetResponseProducts> {
-    console.log('PAGE NUMBER IN SERVICE', thePage);
-
-    const searchUrl = `${this.baseUrl}/products/search/findByCategoryId?id=${theCategoryId}&page=${thePage}&size=${thePageSize}`;
-
-    return this.httpClient.get<IGetResponseProducts>(searchUrl);
   }
 
   private getProducts(getUrl: string) {

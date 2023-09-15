@@ -1,9 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs';
 
 import { Product } from '../../common/product';
-import { ProductService } from '../../services/product.service';
+import {
+  IGetResponseProducts,
+  ProductService,
+} from '../../services/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -15,6 +17,7 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   currentCategoryId = 1;
   previousCategoryId = 1;
+  previousKeyword = '';
   searchModel = false;
 
   // properties for pagination
@@ -38,13 +41,11 @@ export class ProductListComponent implements OnInit {
     if (this.searchModel) {
       this.handleSearchProducts();
     } else {
-      ++this.thePageNumber;
       this.handleListProduct();
     }
   }
 
   handleListProduct() {
-    console.log('Page no productLis antes do subscriber', this.thePageNumber);
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
     if (hasCategoryId) {
@@ -59,46 +60,47 @@ export class ProductListComponent implements OnInit {
 
     this.previousCategoryId = this.currentCategoryId;
 
-    return this.productService
+    this.productService
       .getProductListPaginate(
         this.thePageNumber - 1,
         this.thePageSize,
         this.currentCategoryId,
       )
-      .pipe(
-        tap(data => {
-          console.log('Number no productLis dentro TAP1', this.thePageNumber);
-          this.products = data._embedded.products;
-          this.thePageNumber = data.page.number + 1;
-          this.thePageSize = data.page.size;
-          this.theTotalElements = data.page.totalElements;
-        }),
-        tap(() => {
-          console.log('thePageNumber dentro TAP2', this.thePageNumber);
-        }),
-      )
-      .subscribe();
-
-    // .subscribe({
-    // next: data => {
-    // console.log(
-    //   'Page no productLis dentro do subscriber',
-    //   data.page.number,
-    // );
-    // this.products = data._embedded.products;
-    // this.thePageNumber = data.page.number + 1;
-    // this.thePageSize = data.page.size;
-    // this.theTotalElements = data.page.totalElements;
-    // },
-    // });
+      .subscribe(this.processResult());
   }
 
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.params['keyword'];
-    this.productService.searchProducts(theKeyword).subscribe({
-      next: (data: Product[]) => {
-        this.products = data;
-      },
-    });
+
+    if (this.previousKeyword !== theKeyword) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousKeyword = theKeyword;
+
+    this.productService
+      .searchProductListPaginate(
+        this.thePageNumber - 1,
+        this.thePageSize,
+        theKeyword,
+      )
+      .subscribe(this.processResult());
+  }
+
+  processResult() {
+    return (data: IGetResponseProducts) => {
+      this.products = data._embedded.products;
+      console.log(this.products);
+      // this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+    };
+  }
+
+  updatePageSize(event: Event) {
+    const pageSize = (event.target as HTMLInputElement).value;
+    this.thePageSize = +pageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
   }
 }
