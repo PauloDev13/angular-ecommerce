@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs';
 
 import { Product } from '../../common/product';
 import { ProductService } from '../../services/product.service';
@@ -17,7 +18,7 @@ export class ProductListComponent implements OnInit {
   searchModel = false;
 
   // properties for pagination
-  thePageNumber = 2;
+  thePageNumber = 1;
   thePageSize = 5;
   theTotalElements = 0;
 
@@ -37,11 +38,13 @@ export class ProductListComponent implements OnInit {
     if (this.searchModel) {
       this.handleSearchProducts();
     } else {
+      ++this.thePageNumber;
       this.handleListProduct();
     }
   }
 
   handleListProduct() {
+    console.log('Page no productLis antes do subscriber', this.thePageNumber);
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
     if (hasCategoryId) {
@@ -55,7 +58,6 @@ export class ProductListComponent implements OnInit {
     }
 
     this.previousCategoryId = this.currentCategoryId;
-    console.log('Page', this.thePageNumber);
 
     return this.productService
       .getProductListPaginate(
@@ -63,15 +65,32 @@ export class ProductListComponent implements OnInit {
         this.thePageSize,
         this.currentCategoryId,
       )
-      .subscribe({
-        next: data => {
-          console.log('PAGINATION', data.page);
-          // this.products = data._embedded.products;
-          // this.thePageNumber = data.page.number + 1;
-          // this.thePageSize = data.page.size;
-          // this.theTotalElements = data.page.totalElements;
-        },
-      });
+      .pipe(
+        tap(data => {
+          console.log('Number no productLis dentro TAP1', this.thePageNumber);
+          this.products = data._embedded.products;
+          this.thePageNumber = data.page.number + 1;
+          this.thePageSize = data.page.size;
+          this.theTotalElements = data.page.totalElements;
+        }),
+        tap(() => {
+          console.log('thePageNumber dentro TAP2', this.thePageNumber);
+        }),
+      )
+      .subscribe();
+
+    // .subscribe({
+    // next: data => {
+    // console.log(
+    //   'Page no productLis dentro do subscriber',
+    //   data.page.number,
+    // );
+    // this.products = data._embedded.products;
+    // this.thePageNumber = data.page.number + 1;
+    // this.thePageSize = data.page.size;
+    // this.theTotalElements = data.page.totalElements;
+    // },
+    // });
   }
 
   handleSearchProducts() {
