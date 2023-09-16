@@ -55,6 +55,11 @@
               <p>Quantidade total: {{ totalQuantity }}</p>
               <p>Frete: GRÁTIS</p>
               <p>Preço total: {{ totalPrice | currency: 'USD' }}</p>
+
+              <a [routerLink]="['/checkout']"
+                 class="btn btn-primary btn-sm mb-3">
+                Finalizar compra
+              </a>
             </td>
           </tr>
         </table>
@@ -63,7 +68,10 @@
         <div class="alert alert-warning col-md-12" role="alert">
           Seu carrinho está vazio. Vamos às compras?
         </div>
-        <a [routerLink]="['products']" class="btn btn-primary">Comprar</a>
+        <a [routerLink]="['products']"
+           class="btn btn-primary">
+          Comprar
+        </a>
       </ng-template>
     </div>
   </div>
