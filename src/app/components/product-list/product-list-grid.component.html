@@ -13,7 +13,7 @@
             <div class="price">
               {{ product.unitPrice | currency: 'USD' }}
             </div>
-            <a (click)="addToCart(product)" class="primary-btn">(+) carrinho</a>
+            <a (click)="addToCart(product)" class="primary-btn" style="cursor: pointer">(+) carrinho</a>
           </div>
         </div>
         <div *ngIf="products?.length === 0" class="alert alert-warning col-md-12" role="alert">

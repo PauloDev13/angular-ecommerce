@@ -92,9 +92,6 @@ export class ProductListComponent implements OnInit {
 
   addToCart(theProduct: Product) {
     this.cartService.addToCart(new CartItem(theProduct));
-    console.log(
-      `Adicionando Product: ${theProduct.name}, ${theProduct.unitPrice}`,
-    );
   }
 
   updatePageSize(event: Event) {

@@ -19,14 +19,12 @@ export class CartStatusComponent implements OnInit {
   updateCartStatus() {
     this.cartService.totalPrice.subscribe({
       next: (data: number) => {
-        console.log('total preço', data);
         this.totalPrice = data;
       },
     });
 
     this.cartService.totalQuantity.subscribe({
       next: (data: number) => {
-        console.log('total quantidade', data);
         this.totalQuantity = data;
       },
     });

@@ -3,10 +3,10 @@
     <img alt="product image" class="detail-img" src="{{ product.imageUrl }}">
     <h3>{{ product.name }}</h3>
     <div class="price">{{ product.unitPrice | currency: 'USD'}}</div>
-    <a (click)="addToCart()" class="primary-btn">(+) carrinho</a>
+    <a (click)="addToCart()" class="primary-btn" style="cursor: pointer">(+) carrinho</a>
     <hr>
     <h4>Descrição</h4>
     <p>{{ product.description}}</p>
-    <a class="mt-5" routerLink="/products">Lista de produtos</a>
+    <a [routerLink]="['products']" class="mt-5" style="cursor: pointer">Lista de produtos</a>
   </div>
 </div>

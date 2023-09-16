@@ -34,8 +34,5 @@ export class ProductDetailsComponent implements OnInit {
 
   addToCart() {
     this.cartService.addToCart(new CartItem(this.product));
-    console.log(
-      `Adicionando Product: ${this.product.name}, ${this.product.unitPrice}`,
-    );
   }
 }

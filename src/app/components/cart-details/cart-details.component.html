@@ -1,0 +1,70 @@
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+      <div *ngIf="cartItems.length; else cartEmpty">
+        <table class="table table-bordered">
+          <tr>
+            <th width="20%">Imagem Produto</th>
+            <th width="50%">Descrição</th>
+            <th width="30%">Valores</th>
+          </tr>
+          <tr *ngFor="let tempCartItem of cartItems">
+            <td>
+              <img alt="product" class="img-responsive" src="{{ tempCartItem.imageUrl}}">
+            </td>
+            <td>
+              <p>{{ tempCartItem.name}}</p>
+              <p>{{ tempCartItem.unitPrice | currency: 'USD'}}</p>
+            </td>
+            <td>
+              <div class="items">
+                <label>Quantidade</label>
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      (click)="incrementQuantity(tempCartItem)"
+                      class="btn btn-success btn-sm">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    {{ tempCartItem.quantity}}
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      (click)="decrementQuantity(tempCartItem)"
+                      class="btn btn-danger btn-sm">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  (click)="removeCartItem(tempCartItem)"
+                  class="btn btn-primary btn-sm mt-2">
+                  Remover produto
+                </button>
+              </div>
+              <p class="mt-2">
+                Subtotal: {{ tempCartItem.quantity * tempCartItem.unitPrice | currency: 'USD'}}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td style="font-weight: bold">
+              <p>Quantidade total: {{ totalQuantity }}</p>
+              <p>Frete: GRÁTIS</p>
+              <p>Preço total: {{ totalPrice | currency: 'USD' }}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <ng-template #cartEmpty>
+        <div class="alert alert-warning col-md-12" role="alert">
+          Seu carrinho está vazio. Vamos às compras?
+        </div>
+        <a [routerLink]="['products']" class="btn btn-primary">Comprar</a>
+      </ng-template>
+    </div>
+  </div>
+</div>
