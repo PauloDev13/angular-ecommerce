@@ -1,7 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { CartItem } from '../../common/cart-item';
 import { Product } from '../../common/product';
+import { CartService } from '../../services/cart.service';
 import {
   IGetResponseProducts,
   ProductService,
@@ -26,6 +28,7 @@ export class ProductListComponent implements OnInit {
   theTotalElements = 0;
 
   private productService: ProductService = inject(ProductService);
+  private readonly cartService: CartService = inject(CartService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   ngOnInit() {
@@ -87,14 +90,11 @@ export class ProductListComponent implements OnInit {
       .subscribe(this.processResult());
   }
 
-  processResult() {
-    return (data: IGetResponseProducts) => {
-      this.products = data._embedded.products;
-      console.log(this.products);
-      // this.thePageNumber = data.page.number + 1;
-      this.thePageSize = data.page.size;
-      this.theTotalElements = data.page.totalElements;
-    };
+  addToCart(theProduct: Product) {
+    this.cartService.addToCart(new CartItem(theProduct));
+    console.log(
+      `Adicionando Product: ${theProduct.name}, ${theProduct.unitPrice}`,
+    );
   }
 
   updatePageSize(event: Event) {
@@ -102,5 +102,14 @@ export class ProductListComponent implements OnInit {
     this.thePageSize = +pageSize;
     this.thePageNumber = 1;
     this.listProducts();
+  }
+
+  private processResult() {
+    return (data: IGetResponseProducts) => {
+      this.products = data._embedded.products;
+      // this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+    };
   }
 }
