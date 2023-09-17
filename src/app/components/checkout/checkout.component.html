@@ -39,23 +39,31 @@
             </div>
           </div>
         </div>
-        <!--Endereço de cobrança-->
+
+        <!--Endereço de entrega-->
         <div class="form-area" formGroupName="shippingAddress">
           <h3>Endereço de entrega</h3>
+          <!--País-->
           <div class="row">
             <div class="col-md-2">
               <label for="country">País</label>
             </div>
             <div class="col-md-9">
               <div class="input-space">
-                <input formControlName="country" id="country" type="text">
+                <select (change)="getStates('shippingAddress')" formControlName="country" id="country">
+                  <option *ngFor="let country of countries"
+                          [ngValue]="country"
+                  >
+                    {{country.name}}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
-
+          <!--Rua e numero-->
           <div class="row">
             <div class="col-md-2">
-              <label for="street">Rua</label>
+              <label for="street">Rua/Número</label>
             </div>
             <div class="col-md-9">
               <div class="input-space">
@@ -63,7 +71,7 @@
               </div>
             </div>
           </div>
-
+          <!--Cidade-->
           <div class="row">
             <div class="col-md-2">
               <label for="city">Cidade</label>
@@ -78,7 +86,7 @@
               </div>
             </div>
           </div>
-
+          <!--Estado-->
           <div class="row">
             <div class="col-md-2">
               <label for="state">Estado</label>
@@ -86,14 +94,14 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select formControlName="state" id="state">
-                  <option value="rn">RN</option>
-                  <option value="pb">PB</option>
-                  <option value="pe">PE</option>
+                  <option *ngFor="let state of shippingAddressState"
+                          [ngValue]="state.name">{{state.name}}
+                  </option>
                 </select>
               </div>
             </div>
           </div>
-
+          <!--CEP-->
           <div class="row">
             <div class="col-md-2">
               <label for="zipCode">CEP</label>
@@ -106,6 +114,7 @@
           </div>
         </div>
 
+        <!--Endereço de cobrança igual ao de entrega-->
         <div class="input-space">
           <label class="au-checkbox">
             <input (change)="copyShippingAddressToBillingAddress($event)" type="checkbox">
@@ -113,20 +122,29 @@
           </label>
         </div>
 
-        <!--Endereço de entrega-->
+        <!--Endereço de cobrança-->
         <div class="form-area" formGroupName="billingAddress">
           <h3>Endereço de cobrança</h3>
+          <!--País-->
           <div class="row">
             <div class="col-md-2">
               <label for="billingCountry">País</label>
             </div>
             <div class="col-md-9">
               <div class="input-space">
-                <input formControlName="country" id="billingCountry" type="text">
+                <select
+                  (change)="getStates('billingAddress')"
+                  formControlName="country"
+                  id="country"
+                >
+                  <option *ngFor="let country of countries"
+                          [ngValue]="country">{{country.name}}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
-
+          <!--Rua e numero-->
           <div class="row">
             <div class="col-md-2">
               <label for="billingStreet">Rua</label>
@@ -137,7 +155,7 @@
               </div>
             </div>
           </div>
-
+          <!--Cidade-->
           <div class="row">
             <div class="col-md-2">
               <label for="billingCity">Cidade</label>
@@ -152,7 +170,7 @@
               </div>
             </div>
           </div>
-
+          <!--Estado-->
           <div class="row">
             <div class="col-md-2">
               <label for="billingState">Estado</label>
@@ -160,14 +178,16 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select formControlName="state" id="billingState">
-                  <option value="rn">RN</option>
-                  <option value="pb">PB</option>
-                  <option value="pe">PE</option>
+                  <option *ngFor="let state of billingAddressState"
+                          [ngValue]="state.name"
+                  >
+                    {{state.name}}
+                  </option>
                 </select>
               </div>
             </div>
           </div>
-
+          <!--CEP-->
           <div class="row">
             <div class="col-md-2">
               <label for="billingZipCode">CEP</label>
@@ -179,9 +199,11 @@
             </div>
           </div>
         </div>
+
         <!--Cartão de crédito-->
         <div class="form-area" formGroupName="creditCard">
           <h3>Cartão de crédito</h3>
+          <!--Tipo cartão-->
           <div class="row">
             <div class="col-md-2">
               <label for="cardType">Tipo de cartão</label>
@@ -195,7 +217,7 @@
               </div>
             </div>
           </div>
-
+          <!--Nome proprietário cartão-->
           <div class="row">
             <div class="col-md-2">
               <label for="nameOnCard">Nome no cartão</label>
@@ -206,7 +228,7 @@
               </div>
             </div>
           </div>
-
+          <!--Número cartão-->
           <div class="row">
             <div class="col-md-2">
               <label for="cardNumber">Número do cartão</label>
@@ -217,7 +239,7 @@
               </div>
             </div>
           </div>
-
+          <!--Código de Segurança-->
           <div class="row">
             <div class="col-md-2">
               <label for="securityCode">Código de segurança</label>
@@ -228,7 +250,7 @@
               </div>
             </div>
           </div>
-
+          <!--Validade mês-->
           <div class="row">
             <div class="col-md-2">
               <label for="expirationMonth">Validade/Mês</label>
@@ -236,20 +258,20 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select formControlName="expirationMonth" id="expirationMonth">
-                  <option value="jan">Jan</option>
+                  <option *ngFor="let month of creditCardMonths" value="{{month}}">{{month}}</option>
                 </select>
               </div>
             </div>
           </div>
-
+          <!--Validade ano-->
           <div class="row">
             <div class="col-md-2">
               <label for="expirationYear">validade/Ano</label>
             </div>
             <div class="col-md-9">
               <div class="input-space">
-                <select formControlName="expirationYear" id="expirationYear">
-                  <option value="2000">2000</option>
+                <select (change)="handleMonthsAndYears()" formControlName="expirationYear" id="expirationYear">
+                  <option *ngFor="let year of creditCardYears" value="{{ year }}">{{ year }}</option>
                 </select>
               </div>
             </div>
