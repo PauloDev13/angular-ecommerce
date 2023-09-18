@@ -5,7 +5,7 @@
         <!--Cliente-->
         <div class="form-area" formGroupName="customer">
           <h3>Cliente</h3>
-
+          <!--Nome-->
           <div class="row">
             <div class="col-md-2">
               <label for="firstName">Nome</label>
@@ -13,10 +13,19 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="firstName" id="firstName" type="text">
+                <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="alert alert-danger">
+                  <div *ngIf="firstName?.errors?.['required'] || firstName?.errors?.['notOnlyWhitespace']">
+                    Nome é obrigatório
+                  </div>
+                  <div *ngIf="firstName?.errors?.['minlength'] && !firstName?.errors?.['notOnlyWhitespace']">
+                    Nome deve ter no mínimo 2 caracteres
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
-
+          <!--Sobrenome-->
           <div class="row">
             <div class="col-md-2">
               <label for="lastName">Sobrenome</label>
@@ -24,10 +33,18 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="lastName" id="lastName" type="text">
+                <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="alert alert-danger">
+                  <div *ngIf="lastName?.errors?.['required'] || lastName?.errors?.['notOnlyWhitespace']">
+                    Sobrenome é obrigatório
+                  </div>
+                  <div *ngIf="lastName?.errors?.['minlength'] && !lastName?.errors?.['notOnlyWhitespace']">
+                    Sobrenome deve ter no mínimo 2 caracteres
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
+          <!--Email-->
           <div class="row">
             <div class="col-md-2">
               <label for="email">Email</label>
@@ -35,6 +52,14 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="email" id="email" type="text">
+                <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
+                  <div *ngIf="email?.errors?.['required']">
+                    Email é obrigatório
+                  </div>
+                  <div *ngIf="email?.errors?.['pattern']">
+                    Email inválido
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -57,6 +82,11 @@
                     {{country.name}}
                   </option>
                 </select>
+                <div *ngIf="country?.invalid && (country?.dirty || country?.touched)" class="alert alert-danger">
+                  <div *ngIf="country?.errors?.['required']">
+                    País é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -68,6 +98,14 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="street" id="street" type="text">
+                <div *ngIf="street?.invalid && (street?.dirty || street?.touched)" class="alert alert-danger">
+                  <div *ngIf="street?.errors?.['required'] || street?.errors?.['notOnlyWhitespace']">
+                    Rua e número são obrigatórios
+                  </div>
+                  <div *ngIf="street?.errors?.['minlength'] && !street?.errors?.['notOnlyWhitespace']">
+                    Rua e número devem ter no mínimo 2 caracteres
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -83,6 +121,11 @@
                   <option value="parnamirim">Parnamirim</option>
                   <option value="monte alegre">Monte Alegre</option>
                 </select>
+                <div *ngIf="city?.invalid && (city?.dirty || city?.touched)" class="alert alert-danger">
+                  <div *ngIf="country?.errors?.['required']">
+                    Cidade é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -98,6 +141,11 @@
                           [ngValue]="state.name">{{state.name}}
                   </option>
                 </select>
+                <div *ngIf="state?.invalid && (state?.dirty || state?.touched)" class="alert alert-danger">
+                  <div *ngIf="state?.errors?.['required']">
+                    Estado é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -109,6 +157,11 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="zipCode" id="zipCode" type="text">
+                <div *ngIf="zipCode?.invalid && (zipCode?.dirty || zipCode?.touched)" class="alert alert-danger">
+                  <div *ngIf="zipCode?.errors?.['required'] || zipCode?.errors?.['notOnlyWhitespace']">
+                    CEP é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -214,6 +267,11 @@
                   <option value="visa">Visa</option>
                   <option value="visa">Master</option>
                 </select>
+                <div *ngIf="cardType?.invalid && (cardType?.dirty || cardType?.touched)" class="alert alert-danger">
+                  <div *ngIf="cardType?.errors?.['required']">
+                    Bandeira do cartão é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -225,6 +283,15 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="nameOnCard" id="nameOnCard" type="text">
+                <div *ngIf="nameOnCard?.invalid && (nameOnCard?.dirty || nameOnCard?.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="nameOnCard?.errors?.['required'] || nameOnCard?.errors?.['notOnlyWhitespace']">
+                    Nome do proprietário do cartão é obrigatório
+                  </div>
+                  <div *ngIf="nameOnCard?.errors?.['minlength'] && !nameOnCard?.errors?.['notOnlyWhitespace']">
+                    Nome do proprietário do cartão deve ter no mínimo 2 caracteres
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -236,6 +303,15 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="cardNumber" id="cardNumber" type="text">
+                <div *ngIf="cardNumber?.invalid && (cardNumber?.dirty || cardNumber?.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="cardNumber?.errors?.['required'] || cardNumber?.errors?.['notOnlyWhitespace']">
+                    Número do cartão é obrigatório
+                  </div>
+                  <div *ngIf="cardNumber?.errors?.['pattern'] && !cardNumber?.errors?.['notOnlyWhitespace']">
+                    Número do cartão deve ter 16 caracteres numéricos
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -247,6 +323,15 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="securityCode" id="securityCode" type="text">
+                <div *ngIf="securityCode?.invalid && (securityCode?.dirty || securityCode?.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="securityCode?.errors?.['required'] || securityCode?.errors?.['notOnlyWhitespace']">
+                    Código de segurança do cartão é obrigatório
+                  </div>
+                  <div *ngIf="securityCode?.errors?.['pattern'] && !securityCode?.errors?.['notOnlyWhitespace']">
+                    Código de segurança do cartão deve ter 3 caracteres numéricos
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -260,6 +345,12 @@
                 <select formControlName="expirationMonth" id="expirationMonth">
                   <option *ngFor="let month of creditCardMonths" value="{{month}}">{{month}}</option>
                 </select>
+                <div *ngIf="expirationMonth?.invalid && (expirationMonth?.dirty || expirationMonth?.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="expirationMonth?.errors?.['required']">
+                    Mês de validade do cartão é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -273,6 +364,12 @@
                 <select (change)="handleMonthsAndYears()" formControlName="expirationYear" id="expirationYear">
                   <option *ngFor="let year of creditCardYears" value="{{ year }}">{{ year }}</option>
                 </select>
+                <div *ngIf="expirationYear?.invalid && (expirationYear?.dirty || expirationYear?.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="expirationMonth?.errors?.['required']">
+                    Ano de validade do cartão é obrigatório
+                  </div>
+                </div>
               </div>
             </div>
           </div>
