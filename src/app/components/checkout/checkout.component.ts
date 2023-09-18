@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
+import { CartService } from '../../services/cart.service';
 import { Luv2ShopFormService } from '../../services/luv2-shop-form.service';
 import { Luv2ShopValidators } from '../../validators/luv2-shop.validator';
 
@@ -28,6 +29,7 @@ export class CheckoutComponent implements OnInit {
   theChecked = false;
 
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly cartService: CartService = inject(CartService);
   private readonly luv2ShopService: Luv2ShopFormService =
     inject(Luv2ShopFormService);
 
@@ -94,6 +96,7 @@ export class CheckoutComponent implements OnInit {
     this.getCreditCardYears();
     this.getCreditCardMonths(this.startMonth);
     this.getCountries();
+    this.reviewCartDetail();
 
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -191,6 +194,20 @@ export class CheckoutComponent implements OnInit {
     console.log(this.checkoutFormGroup.get('customer.firstName')?.value);
     console.log(this.checkoutFormGroup.get('customer.lastName')?.value);
     console.log(this.checkoutFormGroup.get('customer.email')?.value);
+  }
+
+  reviewCartDetail() {
+    this.cartService.totalQuantity.subscribe({
+      next: (data: number) => {
+        this.totalQuantity = data;
+      },
+    });
+
+    this.cartService.totalPrice.subscribe({
+      next: (data: number) => {
+        this.totalPrice = data;
+      },
+    });
   }
 
   copyShippingAddressToBillingAddress(event: Event) {
