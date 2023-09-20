@@ -246,15 +246,15 @@ export class CheckoutComponent implements OnInit {
     const billingAddress: IAddress = new Address(
       this.checkoutFormGroup.controls['billingAddress'].value,
     );
-    const billingCountry: Country = this.billingAddressCountry?.value;
-    billingAddress.country = billingCountry.name;
+    // altera o valor do campo Country no objeto billingAddress
+    billingAddress.country = this.billingAddressCountry?.value.name;
 
     // set endereço de cobrança
     const shippingAddress: IAddress = new Address(
       this.checkoutFormGroup.controls['shippingAddress'].value,
     );
-    const shippingCountry: Country = this.shippingAddressCountry?.value;
-    shippingAddress.country = shippingCountry.name;
+    // altera o valor do campo Country no objeto shippingAddress
+    shippingAddress.country = this.shippingAddressCountry?.value.name;
 
     // set objeto compra
     const purchase: IPurchase = new Purchase(
@@ -268,10 +268,18 @@ export class CheckoutComponent implements OnInit {
     // Envia dados para o service
     this.checkoutService.placeOrder(purchase).subscribe({
       next: response => {
-        console.log(response);
+        alert(`Seu pedido foi recebido com o número:\n${response}`);
+        this.resetCart();
+        this.checkoutFormGroup.reset();
       },
       error: error => console.error('Ocorreu um error', error.message()),
     });
+  }
+
+  resetCart() {
+    this.cartService.cartItems = [];
+    this.cartService.totalQuantity.next(0);
+    this.cartService.totalPrice.next(0.0);
   }
 
   reviewCartDetail() {
@@ -288,6 +296,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  // copia os dados do Endereço de Entrega para o Endereço de Cobrança
   copyShippingAddressToBillingAddress(event: Event) {
     const theChecked = (event.target as HTMLInputElement).checked;
     this.theChecked = theChecked;
@@ -297,11 +306,14 @@ export class CheckoutComponent implements OnInit {
         this.checkoutFormGroup.controls['shippingAddress'].value,
       );
       this.billingAddressState = this.shippingAddressState;
+      this.checkoutFormGroup.controls['billingAddress'].disable();
     } else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
+      this.checkoutFormGroup.controls['billingAddress'].enable();
     }
   }
 
+  // atualiza o valor do Select Validade/Mês de acordo com a seleção do Select Validade/Ano
   handleMonthsAndYears() {
     const creditCardFormGroup = this.checkoutFormGroup.controls['creditCard'];
     const selectedYear = +creditCardFormGroup.value.expirationYear;
@@ -315,6 +327,7 @@ export class CheckoutComponent implements OnInit {
     this.getCreditCardMonths(startMonth);
   }
 
+  // popula combo box meses
   getCreditCardMonths(startMonth: number) {
     this.luv2ShopService.getCreditCardMonths(startMonth).subscribe({
       next: (theMonths: number[]) => {
@@ -323,6 +336,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  // popula o Combo box ano
   getCreditCardYears() {
     this.luv2ShopService.getCreditCardYears().subscribe({
       next: (theYears: number[]) => {
@@ -331,6 +345,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  // popula o Combo box países
   getCountries() {
     this.luv2ShopService.getCountries().subscribe({
       next: (theCountries: Country[]) => {
@@ -339,6 +354,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  // popula o Combo box estado de acordo com o valor do Combo box País
   getStates(formGroupName: string) {
     const formGroup = this.checkoutFormGroup.controls[formGroupName];
     const countryCode = formGroup.value.country.code;
@@ -350,14 +366,8 @@ export class CheckoutComponent implements OnInit {
         } else {
           this.billingAddressState = theStates;
         }
+        // atribui o primeiro elemento do array de Estados ao campo Estado
         formGroup.get('state')?.setValue(theStates[0].name);
-
-        if (this.theChecked) {
-          this.billingAddressState = theStates;
-          this.checkoutFormGroup.controls['billingAddress'].patchValue(
-            this.checkoutFormGroup.controls['shippingAddress'].value,
-          );
-        }
       },
     });
   }
