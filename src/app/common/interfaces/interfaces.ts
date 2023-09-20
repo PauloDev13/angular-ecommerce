@@ -44,3 +44,7 @@ export interface IProduct {
   dateCreated?: Date;
   lastUpdated?: Date;
 }
+
+export interface IPurchaseResponse {
+  orderTrackingNumber: string;
+}

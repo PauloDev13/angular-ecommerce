@@ -268,20 +268,27 @@ export class CheckoutComponent implements OnInit {
     // Envia dados para o service
     this.checkoutService.placeOrder(purchase).subscribe({
       next: response => {
-        alert(`Seu pedido foi recebido com o número:\n${response}`);
+        alert(
+          `Seu pedido foi recebido com o número:\n${response.orderTrackingNumber}`,
+        );
         this.resetCart();
-        this.checkoutFormGroup.reset();
       },
-      error: error => console.error('Ocorreu um error', error.message()),
+      error: error => console.error('Ocorreu um error', error.message),
     });
   }
 
+  // exlui os itens no carrinho de compras e zera os valores dos totais
   resetCart() {
     this.cartService.cartItems = [];
     this.cartService.totalQuantity.next(0);
     this.cartService.totalPrice.next(0.0);
+
+    // limpa o formulário checkout e navega para a página produtos
+    this.checkoutFormGroup.reset();
+    this.router.navigate(['/products']);
   }
 
+  // atualiza os valores das variáveis totalQuantity e totalPrice
   reviewCartDetail() {
     this.cartService.totalQuantity.subscribe({
       next: (data: number) => {
@@ -354,7 +361,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  // popula o Combo box estado de acordo com o valor do Combo box País
+  // popula o Combo box Estado de acordo com o valor do Combo box País
   getStates(formGroupName: string) {
     const formGroup = this.checkoutFormGroup.controls[formGroupName];
     const countryCode = formGroup.value.country.code;
