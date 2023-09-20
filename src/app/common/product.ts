@@ -1,4 +1,6 @@
-export class Product {
+import { IProduct } from './interfaces/interfaces';
+
+export class Product implements IProduct {
   constructor(
     public id: number,
     public sku: string,

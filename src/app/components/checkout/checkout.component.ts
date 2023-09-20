@@ -41,8 +41,6 @@ export class CheckoutComponent implements OnInit {
   billingAddressState: State[] = [];
   theChecked = false;
 
-  testOrderItem!: OrderItem;
-
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
   private readonly cartService: CartService = inject(CartService);
   private readonly checkoutService: CheckoutService = inject(CheckoutService);
@@ -245,26 +243,19 @@ export class CheckoutComponent implements OnInit {
     );
 
     // set endereço de entrega
-    const billingCountry: Country = this.billingAddressCountry?.value;
-
     const billingAddress: IAddress = new Address(
-      this.billingAddressStreet?.value,
-      this.billingAddressCity?.value,
-      this.billingStateAddress?.value,
-      billingCountry.name,
-      this.billingAddressZipCode?.value,
+      this.checkoutFormGroup.controls['billingAddress'].value,
     );
+    const billingCountry: Country = this.billingAddressCountry?.value;
+    billingAddress.country = billingCountry.name;
 
     // set endereço de cobrança
-    const shippingCountry: Country = this.shippingAddressCountry?.value;
-
     const shippingAddress: IAddress = new Address(
-      this.shippingAddressStreet?.value,
-      this.shippingAddressCity?.value,
-      this.shippingStateAddress?.value,
-      shippingCountry.name,
-      this.shippingAddressZipCode?.value,
+      this.checkoutFormGroup.controls['shippingAddress'].value,
     );
+    const shippingCountry: Country = this.shippingAddressCountry?.value;
+    shippingAddress.country = shippingCountry.name;
+
     // set objeto compra
     const purchase: IPurchase = new Purchase(
       customer,
@@ -274,7 +265,6 @@ export class CheckoutComponent implements OnInit {
       orderItems,
     );
 
-    // console.log(JSON.stringify(purchase));
     // Envia dados para o service
     this.checkoutService.placeOrder(purchase).subscribe({
       next: response => {
@@ -352,7 +342,6 @@ export class CheckoutComponent implements OnInit {
   getStates(formGroupName: string) {
     const formGroup = this.checkoutFormGroup.controls[formGroupName];
     const countryCode = formGroup.value.country.code;
-    // const countryName = formGroup.value.country.name;
 
     this.luv2ShopService.getStatesFromCountry(countryCode).subscribe({
       next: (theStates: State[]) => {
