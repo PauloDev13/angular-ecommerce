@@ -8,8 +8,17 @@ import { CartItem } from '../common/cart-item';
 })
 export class CartService {
   cartItems: CartItem[] = [];
+  storage: Storage = localStorage;
   totalPrice: Subject<number> = new BehaviorSubject<number>(0);
   totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
+
+  constructor() {
+    const data: CartItem[] = JSON.parse(this.storage.getItem('cartItems')!);
+    if (data) {
+      this.cartItems = data;
+      this.computeCartTotal();
+    }
+  }
 
   addToCart(theCartItem: CartItem): void {
     let alreadyExistsInCart = false;
@@ -51,6 +60,10 @@ export class CartService {
     this.computeCartTotal();
   }
 
+  persistCartItems() {
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
+  }
+
   computeCartTotal() {
     let totalPriceValue = 0;
     let totalQuantityValue = 0;
@@ -62,5 +75,6 @@ export class CartService {
 
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);
+    this.persistCartItems();
   }
 }
