@@ -1,17 +1,22 @@
 <div class="login-status-header">
 
-  <div *ngIf="((authService.isAuthenticated$ | async) === true) && (authService.user$ | async) as user"
-       class="login-status-user-info">
-    Bem vindo {{ user.nickname }}!
+  <div *ngIf="authService.isAuthenticated$ | async; else login">
+    Bem vindo {{ (authService.user$ | async)?.nickname }}!
+    <button
+      (click)="authService.logout()" class="security-btn">
+      Logout
+    </button>
+    <button
+      [routerLink]="['/members']"
+      class="security-btn  mx-1">
+      Membro
+    </button>
   </div>
-  <button
-    (click)="login()" *ngIf="(authService.isAuthenticated$ | async) === false"
-    class="security-btn">
-    Login
-  </button>
-  <button
-    (click)="logout()" *ngIf="(authService.isAuthenticated$ | async) === true"
-    class="security-btn">
-    Logout
-  </button>
+  <ng-template #login>
+    <button
+      (click)="authService.loginWithRedirect()"
+      class="security-btn">
+      Login
+    </button>
+  </ng-template>
 </div>

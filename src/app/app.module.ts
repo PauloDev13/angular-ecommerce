@@ -12,6 +12,7 @@ import { CartDetailsComponent } from './components/cart-details/cart-details.com
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { LoginButtonComponent } from './components/login-button/login-button.component';
+import { MembersPageComponent } from './components/members-page/members-page.component';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -28,6 +29,7 @@ import { SearchComponent } from './components/search/search.component';
     CartDetailsComponent,
     CheckoutComponent,
     LoginButtonComponent,
+    MembersPageComponent,
   ],
   imports: [
     BrowserModule,

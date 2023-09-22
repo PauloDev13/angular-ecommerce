@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
@@ -9,17 +8,16 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class LoginButtonComponent {
   constructor(
-    public authService: AuthService,
-    @Inject(DOCUMENT) private doc: Document,
+    public authService: AuthService, // @Inject(DOCUMENT) private doc: Document,
   ) {}
 
-  login() {
-    this.authService.loginWithRedirect();
-  }
-
-  logout() {
-    this.authService.logout({
-      logoutParams: { returnTo: this.doc.location.origin },
-    });
-  }
+  // login() {
+  //   this.authService.loginWithRedirect();
+  // }
+  //
+  // logout() {
+  //   this.authService.logout({
+  //     logoutParams: { returnTo: this.doc.location.origin },
+  //   });
+  // }
 }
