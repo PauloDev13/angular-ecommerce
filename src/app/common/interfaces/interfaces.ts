@@ -48,3 +48,17 @@ export interface IProduct {
 export interface IPurchaseResponse {
   orderTrackingNumber: string;
 }
+
+export interface IOrderHistory {
+  id: string;
+  orderTrackingNumber: string;
+  totalPrice: number;
+  totalQuantity: number;
+  dateCreated: Date;
+}
+
+export interface IGetResponseOrderHistory {
+  _embedded: {
+    orders: IOrderHistory[];
+  };
+}

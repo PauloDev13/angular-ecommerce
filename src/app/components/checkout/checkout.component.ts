@@ -29,6 +29,8 @@ export class CheckoutComponent implements OnInit {
   totalPrice = 0.0;
   totalQuantity = 0;
 
+  storage: Storage = sessionStorage;
+
   startMonth = new Date().getMonth() + 1;
   checkoutFormGroup!: FormGroup;
 
@@ -129,6 +131,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    const theEmail = this.storage.getItem('userEmail');
+
     this.getCreditCardYears();
     this.getCreditCardMonths(this.startMonth);
     this.getCountries();
@@ -153,7 +157,7 @@ export class CheckoutComponent implements OnInit {
           ],
         ],
         email: [
-          '',
+          theEmail,
           [
             Validators.required,
             Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
