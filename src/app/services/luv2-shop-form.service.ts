@@ -2,26 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 
+import { environment } from '../../environments/environment';
 import { Country } from '../common/country';
+import {
+  IGetResponseCountries,
+  IGetResponseStates,
+} from '../common/interfaces/interfaces';
 import { State } from '../common/state';
-
-interface IGetResponseCountries {
-  _embedded: {
-    countries: Country[];
-  };
-}
-
-interface IGetResponseStates {
-  _embedded: {
-    states: State[];
-  };
-}
 
 @Injectable({
   providedIn: 'root',
 })
 export class Luv2ShopFormService {
-  baseUrl = 'http://localhost:8080/api';
+  urlCountry = `${environment.baseUrl}/countries`;
+  urlState = `${environment.baseUrl}/states`;
   countries: Country[] = [];
   states: State[] = [];
   private readonly httpClient: HttpClient = inject(HttpClient);
@@ -50,14 +44,14 @@ export class Luv2ShopFormService {
 
   getCountries(): Observable<Country[]> {
     return this.httpClient
-      .get<IGetResponseCountries>(`${this.baseUrl}/countries`)
+      .get<IGetResponseCountries>(this.urlCountry)
       .pipe(map(data => (this.countries = data._embedded.countries)));
   }
 
   getStatesFromCountry(code: string): Observable<State[]> {
     return this.httpClient
       .get<IGetResponseStates>(
-        `${this.baseUrl}/states/search/findByCountryCode?code=${code}`,
+        `${this.urlState}/search/findByCountryCode?code=${code}`,
       )
       .pipe(map(data => (this.states = data._embedded.states)));
   }

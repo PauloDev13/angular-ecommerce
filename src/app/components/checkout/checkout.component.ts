@@ -3,18 +3,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Address } from '../../common/address';
-import { Country } from '../../common/country';
 import { Customer } from '../../common/customer';
 import {
   IAddress,
+  ICountry,
   ICustomer,
   IOrder,
+  IOrderItem,
   IPurchase,
+  IState,
 } from '../../common/interfaces/interfaces';
 import { Order } from '../../common/order';
 import { OrderItem } from '../../common/order-item';
 import { Purchase } from '../../common/purchase';
-import { State } from '../../common/state';
 import { CartService } from '../../services/cart.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { Luv2ShopFormService } from '../../services/luv2-shop-form.service';
@@ -37,10 +38,10 @@ export class CheckoutComponent implements OnInit {
   creditCardMonths: number[] = [];
   creditCardYears: number[] = [];
 
-  countries: Country[] = [];
+  countries: ICountry[] = [];
 
-  shippingAddressState: State[] = [];
-  billingAddressState: State[] = [];
+  shippingAddressState: IState[] = [];
+  billingAddressState: IState[] = [];
   theChecked = false;
 
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
@@ -237,7 +238,7 @@ export class CheckoutComponent implements OnInit {
     const order: IOrder = new Order(this.totalPrice, this.totalQuantity);
 
     // set itens da ordem de compra
-    const orderItems: OrderItem[] = this.cartService.cartItems.map(item => {
+    const orderItems: IOrderItem[] = this.cartService.cartItems.map(item => {
       return new OrderItem(item);
     });
 
@@ -359,7 +360,7 @@ export class CheckoutComponent implements OnInit {
   // popula o Combo box países
   getCountries() {
     this.luv2ShopService.getCountries().subscribe({
-      next: (theCountries: Country[]) => {
+      next: (theCountries: ICountry[]) => {
         this.countries = theCountries;
       },
     });
@@ -371,7 +372,7 @@ export class CheckoutComponent implements OnInit {
     const countryCode = formGroup.value.country.code;
 
     this.luv2ShopService.getStatesFromCountry(countryCode).subscribe({
-      next: (theStates: State[]) => {
+      next: (theStates: IState[]) => {
         if (formGroupName === 'shippingAddress') {
           this.shippingAddressState = theStates;
         } else {

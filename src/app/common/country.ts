@@ -1,4 +1,6 @@
-export class Country {
+import { ICountry } from './interfaces/interfaces';
+
+export class Country implements ICountry {
   id: number;
   code: string;
   name: string;

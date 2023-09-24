@@ -1,14 +1,21 @@
 import { Address } from './address';
 import { Customer } from './customer';
+import {
+  IAddress,
+  ICustomer,
+  IOrder,
+  IOrderItem,
+  IPurchase,
+} from './interfaces/interfaces';
 import { Order } from './order';
 import { OrderItem } from './order-item';
 
-export class Purchase {
-  readonly customer: Customer;
-  readonly billingAddress: Address;
-  readonly shippingAddress: Address;
-  readonly order: Order;
-  readonly orderItems: OrderItem[] = [];
+export class Purchase implements IPurchase {
+  readonly customer: ICustomer;
+  readonly billingAddress: IAddress;
+  readonly shippingAddress: IAddress;
+  readonly order: IOrder;
+  readonly orderItems: IOrderItem[] = [];
 
   constructor(
     customer: Customer,

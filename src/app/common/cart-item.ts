@@ -1,6 +1,7 @@
+import { ICartItem } from './interfaces/interfaces';
 import { Product } from './product';
 
-export class CartItem {
+export class CartItem implements ICartItem {
   id: number;
   name: string;
   imageUrl: string;

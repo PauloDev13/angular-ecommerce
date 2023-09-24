@@ -2,12 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { CartItem } from '../../common/cart-item';
-import { Product } from '../../common/product';
-import { CartService } from '../../services/cart.service';
 import {
   IGetResponseProducts,
-  ProductService,
-} from '../../services/product.service';
+  IProduct,
+} from '../../common/interfaces/interfaces';
+import { Product } from '../../common/product';
+import { CartService } from '../../services/cart.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +17,7 @@ import {
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  products: Product[] = [];
+  products: IProduct[] = [];
   currentCategoryId = 1;
   previousCategoryId = 1;
   previousKeyword = '';

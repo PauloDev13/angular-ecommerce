@@ -1,4 +1,6 @@
-export class State {
+import { IState } from './interfaces/interfaces';
+
+export class State implements IState {
   id: number;
   name: string;
 

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 
-import { ProductCategory } from '../../common/product-category';
+import { IProductCategory } from '../../common/interfaces/interfaces';
 import { ProductService } from '../../services/product.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ProductService } from '../../services/product.service';
   styleUrls: ['./product-category-menu.component.css'],
 })
 export class ProductCategoryMenuComponent implements OnInit {
-  productCategories: ProductCategory[] = [];
+  productCategories: IProductCategory[] = [];
   private readonly productService: ProductService = inject(ProductService);
 
   ngOnInit() {
@@ -18,7 +18,7 @@ export class ProductCategoryMenuComponent implements OnInit {
 
   listProductCategories() {
     this.productService.getProductCategories().subscribe({
-      next: (item: ProductCategory[]) => {
+      next: (item: IProductCategory[]) => {
         this.productCategories = item;
       },
     });

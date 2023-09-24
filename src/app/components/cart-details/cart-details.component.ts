@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 
-import { CartItem } from '../../common/cart-item';
+import { ICartItem } from '../../common/interfaces/interfaces';
 import { CartService } from '../../services/cart.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { CartService } from '../../services/cart.service';
   styleUrls: ['./cart-details.component.css'],
 })
 export class CartDetailsComponent implements OnInit {
-  cartItems: CartItem[] = [];
+  cartItems: ICartItem[] = [];
   totalPrice = 0.0;
   totalQuantity = 0;
   private readonly cartService: CartService = inject(CartService);
@@ -18,15 +18,15 @@ export class CartDetailsComponent implements OnInit {
     this.listCartDetails();
   }
 
-  incrementQuantity(theCartItem: CartItem) {
+  incrementQuantity(theCartItem: ICartItem) {
     this.cartService.addToCart(theCartItem);
   }
 
-  decrementQuantity(theCartItem: CartItem) {
+  decrementQuantity(theCartItem: ICartItem) {
     this.cartService.removeToCart(theCartItem);
   }
 
-  removeCartItem(theCartItem: CartItem) {
+  removeCartItem(theCartItem: ICartItem) {
     this.cartService.remove(theCartItem);
   }
 
