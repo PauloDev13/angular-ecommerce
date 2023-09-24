@@ -41,8 +41,8 @@ import { SearchComponent } from './components/search/search.component';
     FontAwesomeModule,
     NgbModule,
     AuthModule.forRoot({
-      domain: 'dev-jqpjtv5zdlzpntvb.us.auth0.com',
-      clientId: 'iH10QtP6Q7d9EVzP1mqO7QdxJiXeyop5',
+      domain: 'domain',
+      clientId: 'clientId',
       authorizationParams: {
         redirect_uri: window.location.origin,
       },
