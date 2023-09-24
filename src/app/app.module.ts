@@ -6,6 +6,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import * as authConfig from '../app/config/auth-config.json';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
@@ -41,8 +42,8 @@ import { SearchComponent } from './components/search/search.component';
     FontAwesomeModule,
     NgbModule,
     AuthModule.forRoot({
-      domain: 'domain',
-      clientId: 'clientId',
+      domain: authConfig.domain,
+      clientId: authConfig.clientId,
       authorizationParams: {
         redirect_uri: window.location.origin,
       },
