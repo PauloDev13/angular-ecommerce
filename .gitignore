@@ -1,6 +1,3 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-/src/app/config/auth-config.json
-.env
 # Compiled output
 /dist
 /tmp
@@ -41,3 +38,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+!/.env
+!/src/app/config/auth-config.json
