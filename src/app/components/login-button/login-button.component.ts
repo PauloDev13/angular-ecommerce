@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { switchMap, tap } from 'rxjs';
 
 @Component({
@@ -9,10 +10,21 @@ import { switchMap, tap } from 'rxjs';
 })
 export class LoginButtonComponent implements OnInit {
   storage: Storage = sessionStorage;
+  isAuthenticated = false;
+
   readonly authService: AuthService = inject(AuthService);
+  private readonly oidcSecurityService: OidcSecurityService =
+    inject(OidcSecurityService);
 
   ngOnInit() {
-    this.getUserDetail();
+    // this.getUserDetail();
+    this.getIsAuthenticated();
+  }
+
+  getIsAuthenticated() {
+    this.oidcSecurityService.isAuthenticated$.subscribe({
+      next: ({ isAuthenticated }) => (this.isAuthenticated = isAuthenticated),
+    });
   }
 
   getUserDetail() {
@@ -36,5 +48,15 @@ export class LoginButtonComponent implements OnInit {
         ),
       )
       .subscribe();
+  }
+
+  login() {
+    this.oidcSecurityService.authorize();
+  }
+
+  logout() {
+    this.oidcSecurityService.logoff().subscribe({
+      next: result => console.log(result),
+    });
   }
 }

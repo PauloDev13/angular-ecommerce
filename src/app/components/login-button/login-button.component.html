@@ -1,9 +1,10 @@
 <div class="login-status-header">
 
-  <div *ngIf="authService.isAuthenticated$ | async; else login">
-    Bem vindo {{ (authService.user$ | async)?.nickname }}!
+  <div *ngIf="isAuthenticated; else loginTemplate">
+    <!--    Bem vindo {{ (authService.user$ | async)?.nickname }}!-->
 
-    <button (click)="authService.logout()" class="security-btn ms-2">
+    <button (click)="logout()" class="security-btn ms-2">
+      <!--    <button (click)="authService.logout()" class="security-btn ms-2">-->
       Logout
     </button>
 
@@ -16,8 +17,9 @@
     </button>
   </div>
 
-  <ng-template #login>
-    <button (click)="authService.loginWithRedirect()" class="security-btn">
+  <ng-template #loginTemplate>
+    <button (click)="login()" class="security-btn">
+      <!--    <button (click)="authService.loginWithRedirect()" class="security-btn">-->
       Login
     </button>
   </ng-template>

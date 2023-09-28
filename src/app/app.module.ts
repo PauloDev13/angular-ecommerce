@@ -2,12 +2,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthModule } from '@auth0/auth0-angular';
+// import { AuthModule } from '@auth0/auth0-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthConfigModule } from './auth/auth-config.module';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
@@ -41,13 +42,14 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ReactiveFormsModule,
     FontAwesomeModule,
     NgbModule,
-    AuthModule.forRoot({
-      domain: '',
-      clientId: '',
-      authorizationParams: {
-        redirect_uri: window.location.origin,
-      },
-    }),
+    // AuthModule.forRoot({
+    //   domain: '',
+    //   clientId: '',
+    //   authorizationParams: {
+    //     redirect_uri: window.location.origin,
+    //   },
+    // }),
+    AuthConfigModule,
   ],
   providers: [
     {
