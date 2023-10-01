@@ -21,7 +21,7 @@
 
       <ng-template #orderNotFound>
         <div class="alert alert-warning col-md-12" role="alert">
-          Não há pedidos para o cliente
+          Não há pedidos para o cliente {{ userEmail }}
         </div>
       </ng-template>
       <button [routerLink]="['/']" class="btn btn-primary">Novo pedido</button>

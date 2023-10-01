@@ -9,15 +9,12 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class AppComponent implements OnInit {
   title = 'Ecommerce';
 
-  private readonly oidcSecurityService: OidcSecurityService =
-    inject(OidcSecurityService);
+  private readonly oidcSecurityService = inject(OidcSecurityService);
 
   ngOnInit(): void {
     this.oidcSecurityService.checkAuth().subscribe({
-      next: loginResponse => {
-        const { isAuthenticated, userData } = loginResponse;
-        console.log('App is authenticated', isAuthenticated);
-        console.log('User data', userData);
+      next: ({ isAuthenticated }) => {
+        console.log('APP_AUTHENTICATED', isAuthenticated);
       },
     });
   }

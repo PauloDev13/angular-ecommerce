@@ -1,7 +1,7 @@
 <div class="login-status-header">
 
   <div *ngIf="isAuthenticated; else loginTemplate">
-    <!--    Bem vindo {{ (authService.user$ | async)?.nickname }}!-->
+    Bem vindo {{ userEmail }}!
 
     <button (click)="logout()" class="security-btn ms-2">
       <!--    <button (click)="authService.logout()" class="security-btn ms-2">-->

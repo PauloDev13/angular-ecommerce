@@ -10,19 +10,31 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class LoginButtonComponent implements OnInit {
   storage: Storage = sessionStorage;
   isAuthenticated = false;
+  userEmail!: string;
 
-  // readonly authService: AuthService = inject(AuthService);
-  private readonly oidcSecurityService: OidcSecurityService =
-    inject(OidcSecurityService);
+  private readonly oidcSecurityService = inject(OidcSecurityService);
 
   ngOnInit() {
-    // this.getUserDetail();
-    this.getIsAuthenticated();
+    this.getUserAuthenticated();
+    this.getUserDetail();
   }
 
-  getIsAuthenticated() {
+  getUserAuthenticated() {
     this.oidcSecurityService.isAuthenticated$.subscribe({
-      next: ({ isAuthenticated }) => (this.isAuthenticated = isAuthenticated),
+      next: ({ isAuthenticated }) => {
+        this.isAuthenticated = isAuthenticated;
+      },
+    });
+  }
+
+  getUserDetail() {
+    this.oidcSecurityService.userData$.subscribe({
+      next: ({ userData }) => {
+        if (this.isAuthenticated) {
+          this.userEmail = userData.name;
+          this.storage.setItem('userEmail', this.userEmail);
+        }
+      },
     });
   }
 
@@ -55,8 +67,7 @@ export class LoginButtonComponent implements OnInit {
 
   logout() {
     console.log('logout');
-    this.oidcSecurityService.logoffAndRevokeTokens().subscribe({
-      next: result => console.log(result),
-    });
+    this.oidcSecurityService.logoffAndRevokeTokens().subscribe();
+    this.storage.clear();
   }
 }
