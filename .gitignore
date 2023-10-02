@@ -5,6 +5,9 @@
 /bazel-out
 
 # Node
+ssl-localhost
+src/environments
+localhost.conf
 /node_modules
 npm-debug.log
 yarn-error.log

@@ -44,12 +44,11 @@ export class CheckoutComponent implements OnInit {
   billingAddressState: IState[] = [];
   theChecked = false;
 
-  private readonly formBuilder: FormBuilder = inject(FormBuilder);
-  private readonly cartService: CartService = inject(CartService);
-  private readonly checkoutService: CheckoutService = inject(CheckoutService);
-  private readonly router: Router = inject(Router);
-  private readonly luv2ShopService: Luv2ShopFormService =
-    inject(Luv2ShopFormService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly cartService = inject(CartService);
+  private readonly checkoutService = inject(CheckoutService);
+  private readonly router = inject(Router);
+  private readonly luv2ShopService = inject(Luv2ShopFormService);
 
   // formGroup cliente
   get firstName() {
