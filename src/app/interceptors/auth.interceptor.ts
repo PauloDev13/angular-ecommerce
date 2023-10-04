@@ -9,22 +9,25 @@ import { inject, Injectable } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  token: string | undefined = '';
+  private readonly baseUrl = environment.baseUrl;
   private readonly oidcSecurityService = inject(OidcSecurityService);
-  // private readonly authService: AuthService = inject(AuthService);
-  // private readonly authState: AuthModule = inject(AuthModule);
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const secureEndpoints = ['http://localhost:8080/api/orders'];
+    const secureEndpoints = [`${this.baseUrl}/orders`];
 
     this.oidcSecurityService.getAccessToken().subscribe({
       next: token => {
-        if (secureEndpoints.some(url => request.urlWithParams.includes(url))) {
+        if (
+          secureEndpoints.some(url => request.urlWithParams.includes(url)) &&
+          token
+        ) {
           request = request.clone({
             setHeaders: {
               Authorization: `Bearer ${token}`,
@@ -34,20 +37,5 @@ export class AuthInterceptor implements HttpInterceptor {
       },
     });
     return next.handle(request);
-    // return from(this.handleAccess(request, next));
   }
-
-  // private async handleAccess(request: HttpRequest<unknown>, next: HttpHandler) {
-  //   const secureEndpoints = ['http://localhost:8080/api/orders'];
-  //
-  //   if (secureEndpoints.some(url => request.urlWithParams.includes(url))) {
-  //     request = request.clone({
-  //       setHeaders: {
-  //         Authorization: `Bearer ${this.token}`,
-  //       },
-  //     });
-  //     console.log('TOKEN INTERCEPTOR', this.token);
-  //   }
-  //   return await lastValueFrom(next.handle(request));
-  // }
 }

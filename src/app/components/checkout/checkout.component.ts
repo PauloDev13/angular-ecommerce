@@ -27,23 +27,18 @@ import { Luv2ShopValidators } from '../../validators/luv2-shop.validator';
   styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
-  totalPrice = 0.0;
-  totalQuantity = 0;
-
-  storage: Storage = sessionStorage;
-
-  startMonth = new Date().getMonth() + 1;
+  countries: ICountry[] = [];
   checkoutFormGroup!: FormGroup;
-
   creditCardMonths: number[] = [];
   creditCardYears: number[] = [];
-
-  countries: ICountry[] = [];
-
   shippingAddressState: IState[] = [];
   billingAddressState: IState[] = [];
   theChecked = false;
+  totalPrice = 0.0;
+  totalQuantity = 0;
 
+  private readonly storage: Storage = sessionStorage;
+  private readonly startMonth = new Date().getMonth() + 1;
   private readonly formBuilder = inject(FormBuilder);
   private readonly cartService = inject(CartService);
   private readonly checkoutService = inject(CheckoutService);

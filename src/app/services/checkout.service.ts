@@ -9,13 +9,10 @@ import { IPurchase, IPurchaseResponse } from '../common/interfaces/interfaces';
   providedIn: 'root',
 })
 export class CheckoutService {
-  private readonly urlCheckout = `${environment.baseUrl}/checkout`;
+  private readonly urlCheckout = `${environment.baseUrl}/checkout/purchase`;
   private readonly httpClient: HttpClient = inject(HttpClient);
 
   placeOrder(purchase: IPurchase): Observable<IPurchaseResponse> {
-    return this.httpClient.post<IPurchaseResponse>(
-      `${this.urlCheckout}/purchase`,
-      purchase,
-    );
+    return this.httpClient.post<IPurchaseResponse>(this.urlCheckout, purchase);
   }
 }
